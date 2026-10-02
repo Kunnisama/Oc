@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OC & Yume Pair Archive 🖤🌸</title>
+    <link href="https://fonts.googleapis.com/css2?family=Charm:wght@400;700&family=Sarabun:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f0d11;
+            --card-bg: #1a161f;
+            --pink-accent: #f2a6c4;
+            --pink-soft: #fbe3ed;
+            --dark-pink: #9e4b6c;
+            --text-color: #e6e1e5;
+            --text-muted: #b8afb8;
+            --border-lace: #3a2a3f;
+        }
+
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.8;
+            background-image: radial-gradient(#2a1f2d 1px, transparent 1px);
+            background-size: 20px 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* 🌸 เอฟเฟกต์ดอกไม้ร่วง */
+        .petal {
+            position: fixed;
+            top: -20px;
+            pointer-events: none;
+            z-index: 1;
+            user-select: none;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0.9; }
+            100% { transform: translateY(105vh) rotate(360deg); opacity: 0; }
+        }
+
+        header {
+            text-align: center;
+            padding: 50px 20px 30px;
+            background: linear-gradient(180deg, #1f1422 0%, var(--bg-color) 100%);
+            border-bottom: 2px dashed var(--pink-accent);
+            position: relative;
+            z-index: 10;
+        }
+
+        .ribbon-tag {
+            display: inline-block;
+            background: var(--dark-pink);
+            color: #fff;
+            padding: 5px 16px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            letter-spacing: 1px;
+            box-shadow: 0 0 10px rgba(242, 166, 196, 0.3);
+            margin-bottom: 12px;
+        }
+
+        h1.title {
+            font-family: 'Charm', cursive;
+            font-size: 2.8em;
+            color: var(--pink-accent);
+            margin: 10px 0;
+            text-shadow: 0 0 10px rgba(242, 166, 196, 0.4);
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* 🏷️ 1. Filter Buttons (หมวดหมู่ตัวละคร) */
+        .filter-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .filter-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--dark-pink);
+            color: var(--pink-soft);
+            padding: 8px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: 'Sarabun', sans-serif;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--dark-pink);
+            color: #fff;
+            box-shadow: 0 0 10px rgba(242, 166, 196, 0.4);
+        }
+
+        /* 🃏 Card Wrapper */
+        .card {
+            background-color: var(--card-bg);
+            border: 2px solid var(--border-lace);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        .card::before {
+            content: "📑 𝒪𝒞 𝒜𝓇𝒸𝒽𝒾𝓋ℯ 🎀";
+            position: absolute;
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--dark-pink);
+            color: var(--pink-soft);
+            font-size: 0.8em;
+            padding: 2px 18px;
+            border-radius: 12px;
+            font-family: 'Charm', cursive;
+            border: 1px solid var(--pink-accent);
+        }
+
+        /* 🎵 2. Mini Audio Player */
+        .audio-player {
+            background: rgba(242, 166, 196, 0.05);
+            border: 1px solid var(--dark-pink);
+            border-radius: 12px;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .play-btn {
+            background: var(--dark-pink);
+            color: #fff;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+
+        .play-btn:hover {
+            transform: scale(1.05);
+            background: var(--pink-accent);
+        }
+
+        .audio-info {
+            flex-grow: 1;
+        }
+
+        .audio-title {
+            font-weight: bold;
+            color: var(--pink-accent);
+            font-size: 0.95em;
+        }
+
+        .audio-sub {
+            font-size: 0.8em;
+            color: var(--text-muted);
+        }
+
+        /* 🗂️ 3. Tab Navigation (ระบบสลับหน้าเนื้อหา) */
+        .tab-menu {
+            display: flex;
+            border-bottom: 2px solid var(--border-lace);
+            margin-bottom: 25px;
+            gap: 5px;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            font-family: 'Charm', cursive;
+            font-weight: bold;
+            transition: 0.3s;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+        }
+
+        .tab-btn:hover {
+            color: var(--pink-soft);
+        }
+
+        .tab-btn.active {
+            color: var(--pink-accent);
+            border-bottom: 2px solid var(--pink-accent);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 💬 4. Dialogue Generator (กล่องสุ่มคำพูด) */
+        .dialogue-box {
+            background: #231b28;
+            border-left: 4px solid var(--pink-accent);
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .dialogue-text {
+            font-style: italic;
+            color: var(--pink-soft);
+            min-height: 48px;
+        }
+
+        .random-quote-btn {
+            background: var(--dark-pink);
+            color: #fff;
+            border: none;
+            padding: 5px 14px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        /* 🎨 5. Color Palette */
+        .palette-container {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .color-swatch {
+            width: 45px;
+            height: 45px;
+            border-radius: 8px;
+            cursor: pointer;
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: transform 0.2s;
+        }
+
+        .color-swatch:hover {
+            transform: scale(1.1);
+        }
+
+        /* 🔗 6. Relationship Cards (การ์ดความสัมพันธ์) */
+        .relation-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .relation-grid { grid-template-columns: 1fr; }
+        }
+
+        .relation-card {
+            background: #231c27;
+            border: 1px solid var(--dark-pink);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .relation-card img {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--pink-accent);
+            margin-bottom: 10px;
+        }
+
+        .relation-title {
+            color: var(--pink-accent);
+            font-weight: bold;
+            font-size: 0.95em;
+        }
+
+        .relation-status {
+            font-size: 0.8em;
+            color: var(--dark-pink);
+            margin-bottom: 8px;
+        }
+
+        .relation-desc {
+            font-size: 0.85em;
+            color: var(--text-muted);
+            text-align: left;
+        }
+
+        /* 🖼️ Gallery Grid */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .gallery-grid img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 1px solid var(--dark-pink);
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .gallery-grid img:hover {
+            transform: scale(1.03);
+            border-color: var(--pink-accent);
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            font-size: 0.85em;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-lace);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="ribbon-tag">✦ ORIGINAL CHARACTERS & YUME ✦</div>
+        <h1 class="title">Character Archive</h1>
+        <p style="color: var(--text-muted); font-size: 0.9em;">คลังเก็บข้อมูลตัวละครและบทบันทึกความทรงจำ</p>
+    </header>
+
+    <div class="container">
+
+        <!-- 🏷️ 1. ปุ่มคัดกรองหมวดหมู่ (Filter Buttons) -->
+        <div class="filter-container">
+            <button class="filter-btn active" onclick="filterCategory('all')">ทั้งหมด</button>
+            <button class="filter-btn" onclick="filterCategory('yume')">Yume Pair</button>
+            <button class="filter-btn" onclick="filterCategory('bsd')">Bungou Stray Dogs</button>
+            <button class="filter-btn" onclick="filterCategory('original')">Original World</button>
+        </div>
+
+        <!-- 🎴 การ์ดแสดงผลตัวละครหลัก -->
+        <div class="card oc-item" data-category="yume bsd">
+            
+            <!-- 🎵 2. เครื่องเล่นเพลง (Mini Audio Player) -->
+            <div class="audio-player">
+                <button class="play-btn" id="playBtn" onclick="toggleAudio()">▶</button>
+                <div class="audio-info">
+                    <div class="audio-title">Velvet Ruins (ベルベットの廃墟)</div>
+                    <div class="audio-sub">Character Theme | Baroque Dream Pop</div>
+                </div>
+                <!-- 🔗 นำ URL ไฟล์เสียง (.mp3) ของคุณมาเปลี่ยนใส่ใน src ได้เลย -->
+                <audio id="bgm" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+            </div>
+
+            <!-- 🗂️ 3. ระบบสลับ Tab (Tab Menu) -->
+            <div class="tab-menu">
+                <button class="tab-btn active" onclick="openTab(event, 'tab-overview')">Overview</button>
+                <button class="tab-btn" onclick="openTab(event, 'tab-story')">Story & Lore</button>
+                <button class="tab-btn" onclick="openTab(event, 'tab-relations')">Relationships</button>
+                <button class="tab-btn" onclick="openTab(event, 'tab-gallery')">Gallery</button>
+            </div>
+
+            <!-- 📌 Tab 1: Overview (ข้อมูลทั่วไป) -->
+            <div id="tab-overview" class="tab-content active">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <img src="https://i.postimg.cc/3rV9xDxd/IMG-7341-(4).png" alt="Fujikawa Yukio" style="max-width: 250px; border-radius: 12px; border: 2px solid var(--pink-accent);">
+                    <h2 style="color: var(--pink-accent); font-family: 'Charm', cursive; margin: 10px 0 5px;">Fujikawa Yukio (ฟุจิกาวะ ยูกิโอะ)</h2>
+                    <span style="font-size: 0.85em; color: var(--text-muted);">#อัญมณีสีครามกับดวงดาราสีนิล | Non-Sharing 1T1D</span>
+                </div>
+
+                <!-- 💬 4. สุ่มคำพูดตัวละคร (Dialogue Generator) -->
+                <div class="dialogue-box">
+                    <div class="dialogue-text" id="dialogueText">"หากความหมายของการมีชีวิตอยู่คือจุดจบ แล้วใยมนุษย์ถึงต้องดิ้นรน..."</div>
+                    <button class="random-quote-btn" onclick="randomQuote()">🎲 สุ่มคำพูดของ OC</button>
+                </div>
+
+                <p><strong>รายละเอียดทั่วไป:</strong></p>
+                <ul>
+                    <li><strong>ส่วนสูง/น้ำหนัก:</strong> 158 ซม. / 44 กก.</li>
+                    <li><strong>ของที่ชอบ:</strong> ชามะลิ, กระต่าย, ดนตรีสไตล์ Baroque</li>
+                    <li><strong>สิ่งที่ไม่ชอบ:</strong> เสียงดัง, ความอึดอัด, อากาศร้อนจัด</li>
+                </ul>
+
+                <!-- 🎨 5. Color Palette -->
+                <p><strong>Character Color Palette (กดเพื่อคัดกรองโค้ดสี):</strong></p>
+                <div class="palette-container">
+                    <div class="color-swatch" style="background: #f2a6c4;" onclick="copyColor('#f2a6c4')" title="#f2a6c4"></div>
+                    <div class="color-swatch" style="background: #9e4b6c;" onclick="copyColor('#9e4b6c')" title="#9e4b6c"></div>
+                    <div class="color-swatch" style="background: #2a1f2d;" onclick="copyColor('#2a1f2d')" title="#2a1f2d"></div>
+                    <div class="color-swatch" style="background: #0f0d11;" onclick="copyColor('#0f0d11')" title="#0f0d11"></div>
+                </div>
+            </div>
+
+            <!-- 📜 Tab 2: Story & Lore (เนื้อเรื่อง) -->
+            <div id="tab-story" class="tab-content">
+                <h3 style="color: var(--pink-accent); font-family: 'Charm', cursive;">⌛ Timeline & Story</h3>
+                <p><strong>Past Childhood:</strong> รู้จักกับ Dazai มาตั้งแต่เด็ก อาศัยอยู่ในละแวกใกล้เคียงกัน</p>
+                <p><strong>Port Mafia Era:</strong> ถูกพามาอยู่อาศัยด้วยกันในเงามืดโดยไม่มีใครรับรู้การมีอยู่ของเธอ</p>
+                <p><strong>Present Era:</strong> ปัจจุบันอาศัยอยู่ด้วยกันที่หอพัก แม้จะไม่ได้ทำงานในสำนักงานนักสืบก็ตาม</p>
+            </div>
+
+            <!-- 🔗 Tab 3: Relationships (การ์ดความสัมพันธ์) -->
+            <div id="tab-relations" class="tab-content">
+                <h3 style="color: var(--pink-accent); font-family: 'Charm', cursive;">🎀 Relationship Dynamics</h3>
+                
+                <div class="relation-grid">
+                    <!-- Card 1 -->
+                    <div class="relation-card">
+                        <img src="https://i.postimg.cc/pLZDz9RS/8b9bd95dd05347948d72e2bb79e1ffb1.jpg" alt="Dazai Osamu">
+                        <div class="relation-title">Dazai Osamu</div>
+                        <div class="relation-status">✦ Pair / Deep Bound ✦</div>
+                        <div class="relation-desc">
+                            "ต่างฝ่ายต่างเป็นความมืดมิดของกันและกัน ยึดเหนี่ยวเพื่อรั้งให้อีกฝ่ายยังคงรู้สึกเป็นมนุษย์"
+                        </div>
+                    </div>
+                    <!-- Card 2 -->
+                    <div class="relation-card">
+                        <img src="https://i.postimg.cc/v8kXZ6ZQ/Untitled537-20260504165705-(3).png" alt="Dag (Pet)">
+                        <div class="relation-title">ด่าง (Pet Rabbit)</div>
+                        <div class="relation-status">✦ Pet & Comfort ✦</div>
+                        <div class="relation-desc">
+                            "กระต่ายสัตว์เลี้ยงตัวโปรด ผู้เป็นเซฟโซนอันสงบสุขในชีวิตประจำวัน"
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 🖼️ Tab 4: Gallery (คลังภาพ) -->
+            <div id="tab-gallery" class="tab-content">
+                <h3 style="color: var(--pink-accent); font-family: 'Charm', cursive;">🖼️ Illustration & Fanart</h3>
+                <div class="gallery-grid">
+                    <img src="https://i.postimg.cc/v8kXZ6ZQ/Untitled537-20260504165705-(3).png" alt="Art 1">
+                    <img src="https://i.postimg.cc/pLZDz9RS/8b9bd95dd05347948d72e2bb79e1ffb1.jpg" alt="Art 2">
+                    <img src="https://i.postimg.cc/3rV9xDxd/IMG-7341-(4).png" alt="Art 3">
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <footer>
+        ✦ OC & Yume Pair Archive | Designed with Love ✦
+    </footer>
+
+    <!-- 🌸 JavaScript คุมระบบทั้งหมด -->
+    <script>
+        // 1. ระบบสลับ Tab
+        function openTab(evt, tabName) {
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => content.classList.remove('active'));
+
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            tabBtns.forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById(tabName).classList.add('active');
+            evt.currentTarget.classList.add('active');
+        }
+
+        // 2. ระบบสุ่มคำพูด (Dialogue Generator)
+        const quotes = [
+            '"หากความหมายของการมีชีวิตอยู่คือจุดจบ แล้วใยมนุษย์ถึงต้องดิ้นรน..."',
+            '"พวกเราต่างเป็นวิญญาณที่แตกสลาย... ที่เลือกจะเดินต่อไปในความมืดด้วยกัน"',
+            '"บางครั้ง การไม่ต้องเยียวยากัน แต่ยอมรับในสิ่งที่เปราะบาง ก็เพียงพอแล้ว"',
+            '"คุณดาไซ... อย่าปล่อยมือกันกลางทางก็พอค่ะ"'
+        ];
+
+        function randomQuote() {
+            const dialogueText = document.getElementById('dialogueText');
+            const randomIndex = Math.floor(Math.random() * quotes.length);
+            dialogueText.innerText = quotes[randomIndex];
+        }
+
+        // 3. ระบบเล่นเพลง (Audio Player)
+        function toggleAudio() {
+            const audio = document.getElementById('bgm');
+            const playBtn = document.getElementById('playBtn');
+
+            if (audio.paused) {
+                audio.play();
+                playBtn.innerText = '❚❚';
+            } else {
+                audio.pause();
+                playBtn.innerText = '▶';
+            }
+        }
+
+        // 4. ระบบคัดกรองหมวดหมู่ (Category Filter)
+        function filterCategory(category) {
+            const items = document.querySelectorAll('.oc-item');
+            const filterBtns = document.querySelectorAll('.filter-btn');
+
+            filterBtns.forEach(btn => btn.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+
+            items.forEach(item => {
+                const itemCategories = item.getAttribute('data-category');
+                if (category === 'all' || itemCategories.includes(category)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        // 5. ระบบคัดลอกโค้ดสี (Copy Color Code)
+        function copyColor(hexCode) {
+            navigator.clipboard.writeText(hexCode);
+            alert('คัดลอกโค้ดสีแล้ว: ' + hexCode);
+        }
+
+        // 6. สร้างกลีบดอกไม้ร่วงหล่น
+        function createPetal() {
+            const petal = document.createElement('div');
+            petal.classList.add('petal');
+            const petals = ['🌸', '🌷', '🎀', '🖤'];
+            petal.innerText = petals[Math.floor(Math.random() * petals.length)];
+            petal.style.left = Math.random() * 100 + 'vw';
+            petal.style.fontSize = (Math.random() * 10 + 12) + 'px';
+            const duration = Math.random() * 3 + 4;
+            petal.style.animationDuration = duration + 's';
+            document.body.appendChild(petal);
+            setTimeout(() => petal.remove(), duration * 1000);
+        }
+        setInterval(createPetal,
